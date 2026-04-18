@@ -17,7 +17,7 @@ def call (Map configMap){
         }
         options{
             timeout(time: 30,unit: 'Minutes')
-            disableConcurrentBuids()
+            disableConcurrentBuilds()
         }
         stages{
             stage('Deploy') {
