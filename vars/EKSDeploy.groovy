@@ -34,9 +34,9 @@ def call (Map configMap){
                                 pwd
                                 ls -l
                                 find . -name Chart.yaml
-                                // sed -i "s/IMAGE_VERSION/${appVersion}/g" values.yaml
-                                // helm upgrade --install ${COMPONENT} -f values-${deploy_to}.yaml -n ${PROJECT} --rollback-on-failure --wait --timeout=5m .
-                                // #kubectl apply -f ${COMPONENT}-${deploy_to}.yaml
+                                #sed -i "s/IMAGE_VERSION/${appVersion}/g" values.yaml
+                                #helm upgrade --install ${COMPONENT} -f values-${deploy_to}.yaml -n ${PROJECT} --rollback-on-failure --wait --timeout=5m .
+                                #kubectl apply -f ${COMPONENT}-${deploy_to}.yaml
                             """
                         }
                     }
