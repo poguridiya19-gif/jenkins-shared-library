@@ -22,7 +22,7 @@ def call (Map configMap){
         stages{
             stage('Deploy') {
                 when{
-                    expression { deploy_to == "dev" || deploy_to = "prod" || deploy_to = "qa" }
+                    expression { deploy_to == "dev" || deploy_to == "qa" || deploy_to == "qa" }
                 }
                 steps {
                     script{
