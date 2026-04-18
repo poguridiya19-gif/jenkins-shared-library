@@ -1,4 +1,5 @@
 def call (Map configMap){
+    
     pipeline {
     // these are pre-build sections
         agent {
@@ -9,7 +10,7 @@ def call (Map configMap){
         environment {
             COURSE = "Jenkins"
             appVersion = configMap.get("appVersion")
-            ACC_ID = ""
+            ACC_ID = "678511327499"
             PROJECT = configMap.get("project")
             COMPONENT = configMap.get("component")
             deploy_to = configMap.get("deploy_to")
