@@ -31,11 +31,11 @@ def call (Map configMap){
                                 set -e
                                 aws eks update-kubeconfig --region ${REGION} --name ${PROJECT}-${deploy_to}
                                 kubectl get nodes
-                                pwd
-                                ls -l
-                                find . -name Chart.yaml
-                                #sed -i "s/IMAGE_VERSION/${appVersion}/g" values.yaml
-                                #helm upgrade --install ${COMPONENT} -f values-${deploy_to}.yaml -n ${PROJECT} --rollback-on-failure --wait --timeout=5m .
+                                #pwd
+                                #ls -l
+                                #find . -name Chart.yaml
+                                sed -i "s/IMAGE_VERSION/${appVersion}/g" values.yaml
+                                helm upgrade --install ${COMPONENT} -f values-${deploy_to}.yaml -n ${PROJECT} --rollback-on-failure --wait --timeout=5m .
                                 #kubectl apply -f ${COMPONENT}-${deploy_to}.yaml
                             """
                         }
