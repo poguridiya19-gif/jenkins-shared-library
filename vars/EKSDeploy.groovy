@@ -22,7 +22,7 @@ def call (Map configMap){
         stages{
             stage('Deploy') {
                 when{
-                    expression { deploy_to == "dev" || deploy_to == "qa" || deploy_to == "qa" }
+                    expression { deploy_to == "dev" ||  deploy_to == "qa" }
                 }
                 steps {
                     script{
@@ -46,7 +46,7 @@ def call (Map configMap){
                 steps{
                     script{
                         sh """
-                           echo "functional tests in DEV environment
+                           echo "functional tests in DEV environment"
                         """
                     }
                 }
@@ -96,53 +96,56 @@ def call (Map configMap){
                     cleanWs()
                 }
                 success {
-                    script {
-                        withCredentials([string(credentialsId: 'slack-token', variable: 'SLACK_WEBHOOK')]) {
-
-                            def payload = """
-                            {
-                            "attachments": [
-                                {
-                                "color": "#2eb886",
-                                "title": "✅ Jenkins Build Successful",
-                                "fields": [
-                                    {
-                                    "title": "Job Name",
-                                    "value": "${env.JOB_NAME}",
-                                    "short": true
-                                    },
-                                    {
-                                    "title": "Build Number",
-                                    "value": "${env.BUILD_NUMBER}",
-                                    "short": true
-                                    },
-                                    {
-                                    "title": "Status",
-                                    "value": "SUCCESS",
-                                    "short": true
-                                    },
-                                    {
-                                    "title": "Build URL",
-                                    "value": "${env.BUILD_URL}",
-                                    "short": false
-                                    }
-                                ],
-                                "footer": "Jenkins CI",
-                                "ts": ${System.currentTimeMillis() / 1000}
-                                }
-                            ]
-                            }
-                            """
-
-                            sh """
-                            curl -X POST \
-                            -H 'Content-type: application/json' \
-                            --data '${payload}' \
-                            ${SLACK_WEBHOOK}
-                            """
-                        }
-                    }
+                    echo 'I will run if success'
                 }
+                // success {
+                //     script {
+                //         withCredentials([string(credentialsId: 'slack-token', variable: 'SLACK_WEBHOOK')]) {
+
+                //             def payload = """
+                //             {
+                //             "attachments": [
+                //                 {
+                //                 "color": "#2eb886",
+                //                 "title": "✅ Jenkins Build Successful",
+                //                 "fields": [
+                //                     {
+                //                     "title": "Job Name",
+                //                     "value": "${env.JOB_NAME}",
+                //                     "short": true
+                //                     },
+                //                     {
+                //                     "title": "Build Number",
+                //                     "value": "${env.BUILD_NUMBER}",
+                //                     "short": true
+                //                     },
+                //                     {
+                //                     "title": "Status",
+                //                     "value": "SUCCESS",
+                //                     "short": true
+                //                     },
+                //                     {
+                //                     "title": "Build URL",
+                //                     "value": "${env.BUILD_URL}",
+                //                     "short": false
+                //                     }
+                //                 ],
+                //                 "footer": "Jenkins CI",
+                //                 "ts": ${System.currentTimeMillis() / 1000}
+                //                 }
+                //             ]
+                //             }
+                //             """
+
+                //             sh """
+                //             curl -X POST \
+                //             -H 'Content-type: application/json' \
+                //             --data '${payload}' \
+                //             ${SLACK_WEBHOOK}
+                //             """
+                //         }
+                //     }
+                // }
             
                 failure {
                     echo 'I will run if failure'
