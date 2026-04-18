@@ -16,7 +16,7 @@ def call (Map configMap){
             REGION = "us-east-1"
         }
         options{
-            timeout(time: 30,unit: 'Minutes')
+            timeout(time: 30,unit: 'MINUTES')
             disableConcurrentBuilds()
         }
         stages{
