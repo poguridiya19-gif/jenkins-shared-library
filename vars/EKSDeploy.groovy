@@ -32,8 +32,22 @@ def call (Map configMap){
                                 set -e
                                 aws eks update-kubeconfig --region ${REGION} --name ${PROJECT}-${deploy_to}
                                 kubectl get nodes
+
+                                cd helm   # ✅ ADD THIS (important)
+
                                 sed -i "s/IMAGE_VERSION/${appVersion}/g" values.yaml
-                                helm upgrade --install ${COMPONENT} -f values-${deploy_to}.yaml -n ${PROJECT} --rollback-on-failure --wait --timeout=5m .
+
+                                helm upgrade --install ${COMPONENT} \
+                                -f values-${deploy_to}.yaml \
+                                -n ${PROJECT} \
+                                --rollback-on-failure \
+                                --wait \
+                                --timeout=5m .
+                                #set -e
+                                #aws eks update-kubeconfig --region ${REGION} --name ${PROJECT}-${deploy_to}
+                                # kubectl get nodes
+                                #sed -i "s/IMAGE_VERSION/${appVersion}/g" values.yaml
+                                #helm upgrade --install ${COMPONENT} -f values-${deploy_to}.yaml -n ${PROJECT} --rollback-on-failure --wait --timeout=5m .
                             """
                         }
                     }
