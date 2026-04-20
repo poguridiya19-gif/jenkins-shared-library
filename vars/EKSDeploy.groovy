@@ -22,9 +22,9 @@ def call (Map configMap){
         }
         stages{
             stage('Deploy') {
-                when{
-                    expression { deploy_to == "dev" ||  deploy_to == "qa" }
-                }
+                // when{
+                //     expression { deploy_to == "dev" ||  deploy_to == "qa" }
+                // }
                 steps {
                     script{
                         withAWS(region:'us-east-1',credentials:'aws-creds') {
@@ -32,21 +32,17 @@ def call (Map configMap){
                                 set -e
                                 aws eks update-kubeconfig --region ${REGION} --name ${PROJECT}-${deploy_to}
                                 kubectl get nodes
-                                #pwd
-                                #ls -l
-                                #find . -name Chart.yaml
                                 sed -i "s/IMAGE_VERSION/${appVersion}/g" values.yaml
-                                helm upgrade --install ${COMPONENT} -f values-${deploy_to}.yaml -n ${PROJECT} --rollback-on-failure --wait --timeout=5m .
-                                #kubectl apply -f ${COMPONENT}-${deploy_to}.yaml
+                                helm upgrade --install ${COMPONENT} -f values-${deploy_to}.yaml -n ${PROJECT} --atomic --wait --timeout=5m .
                             """
                         }
                     }
                 }
             }
             stage('Functional Testing'){
-                when{
-                    expression {deploy_to == "dev"}
-                }
+                // when{
+                //     expression {deploy_to == "dev"}
+                // }
                 steps{
                     script{
                         sh """
@@ -55,44 +51,44 @@ def call (Map configMap){
                     }
                 }
             }
-            stage('Integration Testing'){
-                when{
-                    expression { deploy_to == "qa" }
-                }
-                steps{
-                    script{
-                        sh """
-                            echo "integration tests QA DEV environment"
-                        """
-                    }
-                }
-            }
-            stage('E2E Testing'){
-                when{
-                    expression { deploy_to == "uat" }
-                }
-                steps{
-                    script{
-                        sh """
-                            echo "e2e tests UAT environment"
-                        """
-                    }
-                }
-            }
-            stage('PROD Process'){
-                when{
-                    expression { deploy_to == "prod" }
-                }
-                steps{
-                    script{
-                        sh """ 
-                            echo "received CR ticket id"
-                            echo "e2e tests UAT environment"
-                        """
-                    }
-                }
-            }
-        }
+        //     stage('Integration Testing'){
+        //         when{
+        //             expression { deploy_to == "qa" }
+        //         }
+        //         steps{
+        //             script{
+        //                 sh """
+        //                     echo "integration tests QA DEV environment"
+        //                 """
+        //             }
+        //         }
+        //     }
+        //     stage('E2E Testing'){
+        //         when{
+        //             expression { deploy_to == "uat" }
+        //         }
+        //         steps{
+        //             script{
+        //                 sh """
+        //                     echo "e2e tests UAT environment"
+        //                 """
+        //             }
+        //         }
+        //     }
+        //     stage('PROD Process'){
+        //         when{
+        //             expression { deploy_to == "prod" }
+        //         }
+        //         steps{
+        //             script{
+        //                 sh """ 
+        //                     echo "received CR ticket id"
+        //                     echo "e2e tests UAT environment"
+        //                 """
+        //             }
+        //         }
+        //     }
+        // }
     
         post{
                 always{
